@@ -18,6 +18,7 @@
 │   ├── assets               # 本地静态资源
 │   ├── common               # 应用公用配置，如导航信息
 │   ├── components           # 业务通用组件
+│   ├── constant             # 全局变量配置
 │   ├── e2e                  # 集成测试用例
 │   ├── layouts              # 通用布局
 │   ├── models               # dva model
@@ -44,7 +45,7 @@
 2. 配置全局变量
 
   ```
-    //配置URL:src/constant/config.js
+    //配置文件位置:src/constant/config.js
     //单点登录URL
     export const URL = 'https://login.robo2025.com';
 
