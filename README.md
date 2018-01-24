@@ -40,7 +40,7 @@
 
 1. Installation
 
-  ``yarn install``
+    ``yarn install``
 
 2. 配置全局变量
 
