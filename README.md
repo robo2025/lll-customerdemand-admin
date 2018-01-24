@@ -45,7 +45,8 @@
 2. 配置全局变量
 
   ```
-    //配置文件位置:src/constant/config.js
+    /* 配置文件位置:src/constant/config.js */
+
     //单点登录URL
     export const URL = 'https://login.robo2025.com';
 
