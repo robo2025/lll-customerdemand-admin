@@ -84,3 +84,9 @@
     ```
 
 5. 将打包好的文件放置到web服务器下
+
+## Docker
+
+```bash
+docker run --restart always -p 9090:80 playniuniu/robo-customerdemand-front
+```
