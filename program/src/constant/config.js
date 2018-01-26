@@ -22,7 +22,7 @@ export const REGISTER_URL = URL + '/register';
 export const LOGOUT_URL = URL + '/logout';
 
 // 静态web服务器地址
-let myHost = 'http://localhost:8000';
+let myHost = window.location.protocol + "//"+window.location.host;
 
 // 前端登录验证URL
 export const NEXT_URL = myHost + '/#/test';
