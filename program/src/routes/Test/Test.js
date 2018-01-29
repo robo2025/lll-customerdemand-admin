@@ -1,17 +1,16 @@
-import React from "react";
-import {verifyLogin} from "../../utils/tools";
+import React from 'react';
+import { verifyLogin } from '../../utils/tools';
 
-class Test extends React.Component{
-
-  componentDidMount(){
-    console.log("测试页面加载好了!");
+class Test extends React.Component {
+  componentDidMount() {
+    console.log('测试页面加载好了!');
     verifyLogin();
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <div>跳转中...</div>
-    )
+    );
   }
 }
 export default Test;

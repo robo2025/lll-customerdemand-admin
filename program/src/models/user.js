@@ -1,11 +1,11 @@
-import { query as queryUsers, queryCurrent,getUserInfo } from '../services/user';
+import { query as queryUsers, queryCurrent, getUserInfo } from '../services/user';
 
 export default {
   namespace: 'user',
 
   state: {
     list: [],
-    info:{},
+    info: {},
     loading: false,
     currentUser: {},
   },
@@ -18,7 +18,7 @@ export default {
       });
       const response = yield call(getUserInfo);
       console.log('当前用户数据：', response);
-      window.sessionStorage.setItem("userinfo",JSON.stringify(response.data));
+      window.sessionStorage.setItem('userinfo', JSON.stringify(response.data));
       yield put({
         type: 'save',
         payload: response.data,

@@ -9,13 +9,15 @@
   "env": {
     "development": {
       "extraBabelPlugins": [
-        "dva-hmr"
+        "dva-hmr",
+        "transform-remove-console"
       ]
     },
     "production": {
       "extraBabelPlugins": [
         "transform-runtime",
         "transform-decorators-legacy",
+        "transform-remove-console",        
         ["import", { "libraryName": "antd", "style": true }]
       ]
     }

@@ -1,7 +1,10 @@
-import axios from "axios";
-import {login,jumpToLogin} from "../services/user";
-import {Modal, notification} from 'antd';
+import axios from 'axios';
+import { Modal, notification } from 'antd';
+import { login, jumpToLogin } from '../services/user';
 
+const func = () => {
+  alert(1231231);
+};
 
 const codeMessage = {
   200: '服务器成功返回请求的数据',
@@ -22,53 +25,58 @@ const codeMessage = {
 };
 // Create an instance using the config defaults provided by the library
 // At this point the timeout config value is `0` as is the default for the library
-let instance = axios.create();
+const instance = axios.create();
 
 // Override timeout default for the library
 // Now all requests will wait 2.5 seconds before timing out
 instance.defaults.timeout = 1000;
 
 // Add a request interceptor
-axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use((config) => {
   // Do something before request is sent
   // console.log("--每次请求配置：", config);
   // message.loading('加载中数据中...');
   return config;
-}, function (error) {
+}, (error) => {
   // Do something with request error
   // console.log("--每次请求配置错误：", error);
   return Promise.reject(error);
 });
 
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
+axios.interceptors.response.use((response) => {
   // Do something with response data
   // message.destroy();
   return response;
-}, function (error) {
+}, (error) => {
   // 请求错误服务器返回的信息
-  let response = error.response;
+  const { response } = error;
   /*
    * 如果响应头是以200开头，则是登录验证出了问题，跳转到登录页面
-   *   20001	token不存在
-   *   20002	token过期
-   *   20003	token非法
-   *   20004	登录超时
-   *   30001	无管理员权限
+   *   20001  token不存在
+   *   20002  token过期
+   *   20003  token非法
+   *   20004  登录超时
+   *   30001  无管理员权限
    * */
   if ((response.data.rescode >> 0) === 30001) {
-    //没有权限
-    alert("非管理员账号，没有此系统权限");
+    // 没有权限
+    alert('非管理员账号，没有此系统权限');
     jumpToLogin();
     return;
   }
   if ((response.data.rescode >> 0) > 20000) {
-    //登录过期或者token非法
+    // 登录过期或者token非法
+    notification.error({
+      message: '登录问题',
+      description: response.data.msg,
+    });
     login();
+    return;
   }
 
   if (response.status === 500) {
-    console.log("服务器错误：", response);
+    console.log('服务器错误：', response);
     Modal.error({
       title: `${response.status}错误`,
       content: '很不幸，这是一个坏消息，他表示服务器挂掉了...',
@@ -79,8 +87,6 @@ axios.interceptors.response.use(function (response) {
     message: `${response.status}错误`,
     description: codeMessage[response.status],
   });
-  console.log("服务器错误:", error.response);
-  return;
-
+  console.log('服务器错误:', error.response);
   return Promise.reject(error);
 });
