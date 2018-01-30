@@ -1,22 +1,19 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
-import {connect} from 'dva';
-import {Button, Row, Col, Steps, Card, Popover, Badge, List,Modal,Spin} from 'antd';
+import { connect } from 'dva';
+import { Button, Row, Col, Steps, Card, Popover, Badge, List, Modal, Spin, Icon } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import DescriptionList from '../../components/DescriptionList';
-import {queryString,timeStampToDate} from "../../utils/tools";
-import {getReqType,getReqStatus,getExceptCycle} from "../../utils/utils";
+import { queryString, timeStampToDate } from '../../utils/tools';
+import { getReqType, getReqStatus, getExceptCycle } from '../../utils/utils';
 import styles from './solution-detail.less';
 
-const {Step} = Steps;
-const {Description} = DescriptionList;
+const { Step } = Steps;
+const { Description } = DescriptionList;
 const ButtonGroup = Button.Group;
 
 const getWindowWidth = () => (window.innerWidth || document.documentElement.clientWidth);
-
-
-
 
 
 const tabList = [{
@@ -28,7 +25,7 @@ const tabList = [{
 }];
 
 
-const customDot = (dot, {status}) => (status === 'process' ? (
+const customDot = (dot, { status }) => (status === 'process' ? (
   <Popover placement="topLeft" arrowPointAtCenter content={popoverContent}>
     {dot}
   </Popover>
@@ -58,7 +55,7 @@ const columns = [{
   dataIndex: 'status',
   key: 'status',
   render: text => (
-    text === 'agree' ? <Badge status="success" text="成功"/> : <Badge status="error" text="驳回"/>
+    text === 'agree' ? <Badge status="success" text="成功" /> : <Badge status="error" text="驳回" />
   ),
 }, {
   title: '操作时间',
@@ -71,7 +68,7 @@ const columns = [{
 }];
 
 @connect(state => ({
-  solution:state.solution
+  solution: state.solution,
 }))
 export default class SolutionDetail extends Component {
   constructor(props) {
@@ -81,22 +78,22 @@ export default class SolutionDetail extends Component {
     this.state = {
       operationkey: 'tab1',
       stepDirection: 'horizontal',
-      args: queryString.parse(window.location.href)
-    }
+      args: queryString.parse(window.location.href),
+    };
   }
 
-  //审核方案：1,审核通过，2，审核不通
-  examineSolution(solutionId,status){  //传入需求ID,以及要改变的状态
+  // 审核方案：1,审核通过，2，审核不通
+  examineSolution(solutionId, status) { // 传入需求ID,以及要改变的状态
     const { dispatch } = this.props;
     dispatch({
       type: 'solution/setDetailStatus',
-      solutionId:solutionId,
-      status:status
-    })
+      solutionId,
+      status,
+    });
   }
 
   // 编辑需求
-  editSolution(reqId){
+  editSolution(reqId) {
     Modal.info({
        title: '提示',
        content: (
@@ -109,11 +106,11 @@ export default class SolutionDetail extends Component {
   }
 
   componentDidMount() {
-    const {dispatch} = this.props;
-    //获取方案详细信息
+    const { dispatch } = this.props;
+    // 获取方案详细信息
     dispatch({
-      type: "solution/fetchSolutionDetail",
-      solutionId: this.state.args.solution_id
+      type: 'solution/fetchSolutionDetail',
+      solutionId: this.state.args.solution_id,
     });
 
     this.setStepDirection();
@@ -126,13 +123,13 @@ export default class SolutionDetail extends Component {
   }
 
   onOperationTabChange = (key) => {
-    this.setState({operationkey: key});
+    this.setState({ operationkey: key });
   }
 
   @Bind()
   @Debounce(200)
   setStepDirection() {
-    const {stepDirection} = this.state;
+    const { stepDirection } = this.state;
     const w = getWindowWidth();
     if (stepDirection !== 'vertical' && w <= 576) {
       this.setState({
@@ -146,25 +143,25 @@ export default class SolutionDetail extends Component {
   }
 
   render() {
-    const {stepDirection} = this.state;
-    const { solution} = this.props;
-    const {detail:{req:reqInfo,solution:solutionInfo},loading} = solution;
-    if(!reqInfo){
-      return <Spin spinning={loading}></Spin>;
+    const { stepDirection } = this.state;
+    const { solution } = this.props;
+    const { detail: { req: reqInfo, solution: solutionInfo }, loading } = solution;
+    if (!reqInfo) {
+      return <Spin spinning={loading} />;
     }
-    //需求关键信息
+    // 需求关键信息
     const description = (
       <DescriptionList className={styles.headerList} size="small" col="2">
         <Description term="联系人">{reqInfo.link_man}</Description>
         <Description term="需求ID">{reqInfo.id}</Description>
         <Description term="需求类型">{getReqType(reqInfo.req_type)}</Description>
         <Description term="需求周期">{getExceptCycle(reqInfo.except_cycle)}</Description>
-        <Description term="创建时间">{timeStampToDate(reqInfo.created_time*1000).timeStr}</Description>
+        <Description term="创建时间">{timeStampToDate(reqInfo.created_time * 1000).timeStr}</Description>
         <Description term="操作人">不可追溯</Description>
       </DescriptionList>
     );
 
-    //需求状态及金额
+    // 需求状态及金额
     const extra = (
       <Row>
         <Col xs={24} sm={12}>
@@ -178,39 +175,39 @@ export default class SolutionDetail extends Component {
       </Row>
     );
 
-    let solutionId = this.state.args.solution_id;//方案ID
+    const solutionId = this.state.args.solution_id;// 方案ID
 
-    let action = (solutionInfo.status !== 0) ? (
+    const action = (solutionInfo.status !== 0) ? (
       <div>
         <ButtonGroup>
           <Button onClick={this.editSolution}>编辑</Button>
         <Button disabled>驳回</Button>
         </ButtonGroup>
-        <Button type="primary" style={{marginLeft:"1.5rem"}} disabled>通过</Button>
+        <Button type="primary" style={{ marginLeft: '1.5rem' }} disabled>通过</Button>
       </div>
-    ):(
+    ) : (
       <div>
         <ButtonGroup>
           <Button onClick={this.editSolution}>编辑</Button>
-        <Button onClick={this.examineSolution.bind(this,solutionId,2)}>驳回</Button>
+        <Button onClick={this.examineSolution.bind(this, solutionId, 2)}>驳回</Button>
         </ButtonGroup>
-        <Button type="primary" style={{marginLeft:"1.5rem"}} onClick={this.examineSolution.bind(this,solutionId,1)} loading={loading}>审核通过</Button>
+        <Button type="primary" style={{ marginLeft: '1.5rem' }} onClick={this.examineSolution.bind(this, solutionId, 1)} loading={loading}>审核通过</Button>
       </div>
-    )
+    );
 
     // console.log("方案详情页props",this.props,solutionInfo);
 
     return (
       <PageHeaderLayout
-        title={"需求名称："+reqInfo.title}
-        logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png"/>}
+        title={'需求名称：' + reqInfo.title}
+        logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
         content={description}
         extraContent={extra}
         tabList={tabList}
       >
         <Card
           title="方案详情"
-          style={{marginBottom: 0}}
+          style={{ marginBottom: 0 }}
           extra={action}
           bordered={false}
         >
@@ -219,13 +216,22 @@ export default class SolutionDetail extends Component {
             size="large"
           >
             <List.Item
-              key='title'
+              key="title"
               actions={[<span>{getReqStatus(solutionInfo.status)}</span>]}
             >
               <List.Item.Meta
                 title={solutionInfo.title}
               />
               {solutionInfo.desc}
+              <div style={{ marginTop: '1rem' }}>
+                附件列表：
+                <Icon type="file-word" />
+                {solutionInfo.file_url
+                  ?
+                  <a href={solutionInfo.file_url} download={(solutionInfo.file_url.split('-ly-'))[1]}>{(solutionInfo.file_url.split('-ly-'))[1]}</a> :
+                  '无'
+                }
+              </div>
             </List.Item>
           </List>
         </Card>
@@ -235,7 +241,7 @@ export default class SolutionDetail extends Component {
             <Description term="联系方式">{reqInfo.mobile}</Description>
             <Description term="公司信息">{reqInfo.company}</Description>
           </DescriptionList>
-        </Card>*/}
+        </Card> */}
       </PageHeaderLayout>
     );
   }

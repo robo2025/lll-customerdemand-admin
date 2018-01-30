@@ -178,11 +178,11 @@ export default class ReqDetail extends Component {
        <Card title="需求详情" style={{ marginBottom: 24 }} bordered={false}>
           {reqInfo.desc}
           <div style={{ marginTop: '1rem' }}>
-            附件：
+            附件列表：
             <Icon type="file-word" />
             {reqInfo.file_url
               ?
-              <a href={reqInfo.file_url}>{reqInfo.file_url}</a> :
+              <a href={reqInfo.file_url} download={(reqInfo.file_url.split('-ly-'))[1]}>{(reqInfo.file_url.split('-ly-'))[1]}</a> :
                '无'
             }
           </div>
