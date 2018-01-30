@@ -6,11 +6,6 @@ const menuData = [{
   name: '方案管理',
   icon: 'appstore-o',
   path: 'solutions_manager',
-}, {
-  name: '使用文档',
-  icon: 'book',
-  path: 'http://blog.liaolunling.top',
-  target: '_blank',
 }];
 
 function formatter(data, parentPath = '') {
