@@ -73,7 +73,6 @@ class ReqManager extends PureComponent {
   removeDemandsByIds(reqIds) {
     const { dispatch } = this.props;
     if (reqIds.length < 1) return false;
-    alert(1);
     confirm({
       title: '删除',
       content: '删除不可恢复',

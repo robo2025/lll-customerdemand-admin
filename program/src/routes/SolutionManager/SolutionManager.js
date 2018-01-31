@@ -6,6 +6,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './solution-manager.less';
 
+const { confirm } = Modal;
 const FormItem = Form.Item;
 const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
@@ -22,6 +23,7 @@ class SolutionManager extends PureComponent {
     this.examineSolution = this.examineSolution.bind(this);
     this.paginationFunc = this.paginationFunc.bind(this);
     this.jumpToDetail = this.jumpToDetail.bind(this);
+    this.removeSolutionsByIds = this.removeSolutionsByIds.bind(this);
     this.state = {
       addInputValue: '',
       modalVisible: false,
@@ -59,6 +61,22 @@ class SolutionManager extends PureComponent {
       type: 'solution/fetch',
       offset,
       limit,
+    });
+  }
+
+  // 多选删除需求
+  removeSolutionsByIds(reqIds) {
+    const { dispatch } = this.props;
+    if (reqIds.length < 1) return false;
+    confirm({
+      title: '删除',
+      content: '删除尚在开发中',
+      onOk() {
+       /*  dispatch({
+          type: 'demand/removeDemands',
+          reqIdArr: reqIds,
+        }); */
+      },
     });
   }
 
@@ -334,11 +352,6 @@ class SolutionManager extends PureComponent {
                 selectedRows.length > 0 && (
                   <span>
                     <Button>批量操作</Button>
-                    <Dropdown overlay={menu}>
-                      <Button>
-                        更多操作 <Icon type="down" />
-                      </Button>
-                    </Dropdown>
                   </span>
                 )
               }
@@ -354,6 +367,7 @@ class SolutionManager extends PureComponent {
               examine={this.examineSolution}
               pagingFun={this.paginationFunc}
               jumpFunc={this.jumpToDetail}
+              removeSolutions={this.removeSolutionsByIds}              
             />
           </div>
         </Card>
