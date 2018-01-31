@@ -1,27 +1,28 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
 import StandardTable from '../../components/StandardTable/ReqTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './req-manager.less';
 
-
+const { confirm } = Modal;
 const FormItem = Form.Item;
 const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
-//需求管理页面
+// 需求管理页面
 @connect(state => ({
   rule: state.rule,
-  demands:state.demand
+  demands: state.demand,
 }))
 @Form.create()
 class ReqManager extends PureComponent {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.examineDemand  = this.examineDemand.bind(this);
+    this.examineDemand = this.examineDemand.bind(this);
     this.paginationFunc = this.paginationFunc.bind(this);
     this.jumpToDetail = this.jumpToDetail.bind(this);
+    this.removeDemandsByIds = this.removeDemandsByIds.bind(this);
     this.state = {
       addInputValue: '',
       modalVisible: false,
@@ -32,41 +33,58 @@ class ReqManager extends PureComponent {
   }
 
 
-  //审核需求：1,审核通过，2，审核不通
-  examineDemand(reqId,status){  //传入需求ID,以及要改变的状态
-    console.log("审核需求：",reqId,status);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'demand/setDemandStatus',
-      reqId:reqId,
-      status:status
-    })
-  }
-
-  //分页函数
-  paginationFunc(offset,limit){
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'demand/fetch',
-      offset:offset,
-      limit:limit
-    });
-  }
-
-  //跳转到需求详情页
-  jumpToDetail(reqId){
-    this.props.history.push("/req/detail?req_id="+reqId);
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'demand/fetch',
       offset: 0,
-      limit: 10
+      limit: 10,
     });
   }
 
+  // 审核需求：1,审核通过，2，审核不通
+  examineDemand(reqId, status) { // 传入需求ID,以及要改变的状态
+    console.log('审核需求：', reqId, status);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'demand/setDemandStatus',
+      reqId,
+      status,
+    });
+  }
+
+  // 分页函数
+  paginationFunc(offset, limit) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'demand/fetch',
+      offset,
+      limit,
+    });
+  }
+
+  // 跳转到需求详情页
+  jumpToDetail(reqId) {
+    this.props.history.push('/req/detail?req_id=' + reqId);
+  }
+
+
+  // 多选删除需求
+  removeDemandsByIds(reqIds) {
+    const { dispatch } = this.props;
+    if (reqIds.length < 1) return false;
+    alert(1);
+    confirm({
+      title: '删除',
+      content: '删除不可恢复',
+      onOk() {
+        dispatch({
+          type: 'demand/removeDemands',
+          reqIdArr: reqIds,
+        });
+      },
+    });
+  }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     // console.log("父组件",pagination,filtersArg,sorter);
@@ -312,9 +330,9 @@ class ReqManager extends PureComponent {
 
   render() {
     // console.log("需求管理页面props：",this.props);
-    const { demands: { loading: ruleLoading, list:data,total } } = this.props;
+    const { demands: { loading: ruleLoading, list: data, total } } = this.props;
     const { selectedRows, modalVisible, addInputValue } = this.state;
-  // console.log("rule:--",ruleLoading,data);
+    // console.log("rule:--",ruleLoading,data);
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
@@ -354,6 +372,7 @@ class ReqManager extends PureComponent {
               examine={this.examineDemand}
               pagingFun={this.paginationFunc}
               jumpFunc={this.jumpToDetail}
+              removeDemands={this.removeDemandsByIds}
             />
           </div>
         </Card>

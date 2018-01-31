@@ -1,4 +1,4 @@
-import {queryAllDemands,checkDemand,deleteDemand,getDemandDetail} from '../services/demand';
+import { queryAllDemands, checkDemand, deleteDemand, getDemandDetail, deleteDemands } from '../services/demand';
 
 export default {
   namespace: 'demand',
@@ -6,19 +6,19 @@ export default {
   state: {
     list: [],
     loading: false,
-    detail:{},
-    offset:0,
-    total:0,
-    limit:10
+    detail: {},
+    offset: 0,
+    total: 0,
+    limit: 10,
   },
 
   effects: {
-    * fetch({offset,limit}, {call, put}) {
+    * fetch({ offset, limit }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(queryAllDemands,offset,limit);
+      const response = yield call(queryAllDemands, offset, limit);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'saveAll',
@@ -29,12 +29,12 @@ export default {
         payload: false,
       });
     },
-    * fetchDemandDetail({reqId},{call,put}){
+    * fetchDemandDetail({ reqId }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(getDemandDetail,reqId);
+      const response = yield call(getDemandDetail, reqId);
       // console.log('获取需求详情响应：', response);
       yield put({
         type: 'saveDetail',
@@ -45,56 +45,72 @@ export default {
         payload: false,
       });
     },
-    *setDemandStatus({reqId,status},{call,put}){
+    *setDemandStatus({ reqId, status }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(checkDemand,reqId,status);
+      const response = yield call(checkDemand, reqId, status);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'changeStatus',
-        reqId:reqId,
-        status:status
+        reqId,
+        status,
       });
       yield put({
         type: 'changeLoading',
         payload: false,
       });
     },
-    *setDetailStatus({reqId,status},{call,put}){
+    *setDetailStatus({ reqId, status }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(checkDemand,reqId,status);
+      const response = yield call(checkDemand, reqId, status);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'changeStatus2',
-        reqId:reqId,
-        status:status
+        reqId,
+        status,
       });
       yield put({
         type: 'changeLoading',
         payload: false,
       });
     },
-    *removeDemand({reqId}, {call, put}){
+    *removeDemand({ reqId }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(deleteDemand,reqId);
+      const response = yield call(deleteDemand, reqId);
       // console.log('获取需求响应：：', response);
       yield put({
         type: 'remove',
-        reqId:reqId
+        reqId,
       });
       yield put({
         type: 'changeLoading',
         payload: false,
       });
-    }
+    },
+    *removeDemands({ reqIdArr }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(deleteDemands, reqIdArr);
+      // console.log('获取需求响应：：', response);
+      yield put({
+        type: 'removes',
+        reqIds: reqIdArr,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
   },
 
   reducers: {
@@ -102,46 +118,51 @@ export default {
       return {
         ...state,
         list: action.payload.data,
-        total:action.payload.headers["x-content-total"]>>0,
-        offset:action.offset>>0,
-        limit:action.limit>>0
+        total: action.payload.headers['x-content-total'] >> 0,
+        offset: action.offset >> 0,
+        limit: action.limit >> 0,
       };
     },
-    saveDetail(state,action){
+    saveDetail(state, action) {
       return {
         ...state,
-        detail:action.payload
-      }
+        detail: action.payload,
+      };
     },
-    changeStatus(state,action) {
+    changeStatus(state, action) {
       return {
         ...state,
-        list: state.list.map(val => {
-          if(val.id===(action.reqId>>0)){
+        list: state.list.map((val) => {
+          if (val.id === (action.reqId >> 0)) {
             val.status = action.status;
             return val;
-          }else{
+          } else {
             return val;
           }
         }),
-      }
+      };
     },
-    changeStatus2(state,action) {
+    changeStatus2(state, action) {
       return {
         ...state,
-        detail:{
+        detail: {
           ...state.detail,
-          req:{...state.detail.req,status:action.status}
-        }
-      }
+          req: { ...state.detail.req, status: action.status },
+        },
+      };
     },
-    remove(state,action){
-      return{
+    remove(state, action) {
+      return {
         ...state,
-        list:state.list.map((val)=>(
-          val.id !== action.reqId>>0
-        ))
-      }
+        list: state.list.map(val => (
+          val.id !== action.reqId >> 0
+        )),
+      };
+    },
+    removes(state, action) {
+      return {
+        ...state,
+      };
     },
     changeLoading(state, action) {
       return {

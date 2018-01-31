@@ -9,8 +9,7 @@
   "env": {
     "development": {
       "extraBabelPlugins": [
-        "dva-hmr",
-        "transform-remove-console"
+        "dva-hmr"
       ]
     },
     "production": {

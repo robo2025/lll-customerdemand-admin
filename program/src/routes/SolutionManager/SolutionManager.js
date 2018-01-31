@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
 import StandardTable from '../../components/StandardTable/SolutionTable';
@@ -10,10 +10,10 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
-//方案管理页面
+// 方案管理页面
 @connect(state => ({
   rule: state.rule,
-  solutions:state.solution
+  solutions: state.solution,
 }))
 @Form.create()
 class SolutionManager extends PureComponent {
@@ -31,45 +31,45 @@ class SolutionManager extends PureComponent {
     };
   }
 
-
-
-  //审核方案：1,审核通过，2，审核不通
-  examineSolution(solutionId,status){  //传入需求ID,以及要改变的状态
-    console.log("审核方案",solutionId,status);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'solution/setSolutionStatus',
-      solutionId:solutionId,
-      status:status
-    })
-  }
-
-  //分页函数
-  paginationFunc(offset,limit){
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'solution/fetch',
-      offset:offset,
-      limit:limit
-    });
-  }
-
-  //跳转到方案详情页
-  jumpToDetail(solutionId){
-    this.props.history.push("/solution/detail?solution_id="+solutionId);
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'solution/fetch',
       offset: 0,
-      limit: 10
+      limit: 10,
     });
   }
 
+
+  // 审核方案：1,审核通过，2，审核不通
+  examineSolution(solutionId, status) { // 传入需求ID,以及要改变的状态
+    console.log('审核方案', solutionId, status);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'solution/setSolutionStatus',
+      solutionId,
+      status,
+    });
+  }
+
+  // 分页函数
+  paginationFunc(offset, limit) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'solution/fetch',
+      offset,
+      limit,
+    });
+  }
+
+  // 跳转到方案详情页
+  jumpToDetail(solutionId) {
+    this.props.history.push('/solution/detail?solution_id=' + solutionId);
+  }
+
+
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    console.log("父组件",pagination,filtersArg,sorter);
+    console.log('父组件', pagination, filtersArg, sorter);
     const { dispatch } = this.props;
     const { formValues } = this.state;
 
@@ -311,8 +311,8 @@ class SolutionManager extends PureComponent {
   }
 
   render() {
-    console.log("方案管理页面props：",this.props);
-    const { solutions: { loading: ruleLoading, list:data,total } } = this.props;
+    console.log('方案管理页面props：', this.props);
+    const { solutions: { loading: ruleLoading, list: data, total } } = this.props;
     const { selectedRows, modalVisible, addInputValue } = this.state;
     // console.log("rule:--",ruleLoading,data);
     const menu = (
