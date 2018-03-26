@@ -8,8 +8,8 @@
 _roadhog-api-doc
 
 # production
-/dist
-/program/dist/
+# /dist
+# /program/dist/
 
 
 # misc
