@@ -5,10 +5,10 @@
 * */
 
 // 单点登录URL
-export const URL = 'https://testlogin.robo2025.com';
+export const URL = '//testlogin.robo2025.com';
 
 // 网站内容接口URL
-export const URL1 = 'http://testapi.robo2025.com/customerdemand';
+export const URL1 = '//testapi.robo2025.com/customerdemand';
 
 // 验证登录接口URL
 export const LOGIN_URL = `${URL}/server/authorize`;
