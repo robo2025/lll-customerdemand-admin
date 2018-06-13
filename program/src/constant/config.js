@@ -5,31 +5,31 @@
 * */
 
 // 单点登录URL
-export const URL = 'https://login.robo2025.com';
+export const URL = 'https://testlogin.robo2025.com';
 
 // 网站内容接口URL
-export const URL1 = '//api-customerdemand.robo2025.com';
+export const URL1 = 'http://testapi.robo2025.com/customerdemand';
 
 // 验证登录接口URL
-export const LOGIN_URL = URL + '/server/authorize';
+export const LOGIN_URL = `${URL}/server/authorize`;
 
 // 注册接口URL
-export const REGISTER_URL = URL + '/register';
+export const REGISTER_URL = `${URL}/register`;
 
 // 登录接口URL
-export const LOGOUT_URL = URL + '/logout';
+export const LOGOUT_URL = `${URL}/logout`;
 
 // 静态web服务器地址
-const myHost = window.location.protocol + '//' + window.location.host;
+const myHost = `${window.location.protocol}//${window.location.host}`;
 
 // 前端登录验证URL
-export const NEXT_URL = myHost + '/#/test';
+export const NEXT_URL = `${myHost}/#/test`;
 
 // 前端首页URL
-export const HOME_PAGE = myHost + '/#/reqs_manager';
+export const HOME_PAGE = `${myHost}/#/reqs_manager`;
 
 // 前端验证URL
-export const VERIFY_PAGE = myHost + '/#/test';
+export const VERIFY_PAGE = `${myHost}/#/test`;
 
 // 文件服务器URL
 export const FILE_SERVER = '//imgcdn.robo2025.com/';

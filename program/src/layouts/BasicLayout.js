@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 import { Layout, Icon, message } from 'antd';
 import DocumentTitle from 'react-document-title';
@@ -14,7 +15,7 @@ import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
-import {logout} from "../services/user"
+import { logout } from '../services/user';
 
 /**
  * 根据菜单取得重定向地址.
@@ -112,8 +113,8 @@ class BasicLayout extends React.PureComponent {
     });
   }
   handleMenuClick = ({ key }) => {
-    console.log("退出登录");
-    //退出登录
+    console.log('退出登录');
+    // 退出登录
     logout();
   }
   handleNoticeVisibleChange = (visible) => {
@@ -127,7 +128,7 @@ class BasicLayout extends React.PureComponent {
     const {
       collapsed, fetchingNotices, notices, routerData, match, location,
     } = this.props;
-    const currentUser = JSON.parse(window.sessionStorage.getItem('userinfo'));
+    const currentUser = Cookies.get('userinfo') ? JSON.parse(Cookies.get('userinfo')) : {};
     // console.log('baseLayout', this.props);
     const layout = (
       <Layout>

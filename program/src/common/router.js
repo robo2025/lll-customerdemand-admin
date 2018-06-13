@@ -120,13 +120,13 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['newpage'], () => import('../routes/NewPage/Page3')),
     },
     '/reqs_manager': {
-      component: dynamicWrapper(app, ['demand','rule'], () => import('../routes/ReqManager/ReqManager')),
+      component: dynamicWrapper(app, ['demand', 'rule'], () => import('../routes/ReqManager/ReqManager')),
     },
     '/req/detail': {
-      component: dynamicWrapper(app, ['demand','profile'], () => import('../routes/ReqDetail/ReqDetail')),
+      component: dynamicWrapper(app, ['demand', 'profile'], () => import('../routes/ReqDetail/ReqDetail')),
     },
     '/solutions_manager': {
-      component: dynamicWrapper(app, ['solution','rule'], () => import('../routes/SolutionManager/SolutionManager')),
+      component: dynamicWrapper(app, ['solution', 'rule'], () => import('../routes/SolutionManager/SolutionManager')),
     },
     '/solution/detail': {
       component: dynamicWrapper(app, ['solution'], () => import('../routes/SolutionDetail/SolutionDetail')),
