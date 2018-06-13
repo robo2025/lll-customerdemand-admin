@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent, getUserInfo } from '../services/user';
+import { queryCurrent, getUserInfo } from '../services/user';
 
 export default {
   namespace: 'user',
@@ -11,14 +11,15 @@ export default {
   },
 
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch({ success, error }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
       });
       const response = yield call(getUserInfo);
-      console.log('当前用户数据：', response);
-      window.sessionStorage.setItem('userinfo', JSON.stringify(response.data));
+      if (response.rescode >> 0 === 10000) {
+        if (typeof success === 'function') { success(response); }
+      } else if (typeof error === 'function') { error(response); return; }
       yield put({
         type: 'save',
         payload: response.data,
@@ -39,6 +40,7 @@ export default {
 
   reducers: {
     save(state, action) {
+      window.sessionStorage.setItem('user_id', `${action.payload.id}`);
       return {
         ...state,
         info: action.payload,

@@ -1,11 +1,11 @@
 import 'babel-polyfill';
 import dva from 'dva';
+import { hashHistory } from 'dva/router';
 import 'moment/locale/zh-cn';
 import FastClick from 'fastclick';
 import './g2';
 import './rollbar';
 import onError from './error';
-import { hashHistory } from 'dva/router';
 import './index.less';
 // 1. Initialize
 const app = dva({
@@ -17,6 +17,7 @@ const app = dva({
 // app.use({});
 
 // 3. Register global model
+app.model(require('./models/user'));
 app.model(require('./models/global'));
 
 // 4. Router

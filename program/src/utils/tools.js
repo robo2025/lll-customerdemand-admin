@@ -1,21 +1,32 @@
 import Cookies from 'js-cookie';
-import { LOGIN_URL, NEXT_URL, HOME_PAGE, VERIFY_PAGE } from '../constant/config';
+import { LOGIN_URL, VERIFY_PAGE } from '../constant/config';
+
 
 // 验证是否登录
 export function verifyLogin() {
-  console.log('下面进入验证程序');
-  const { href } = window.location;
+  const href = window.location.href;
   console.log('页面地址:', href);
   const paramas = queryString.parse(href);
   /* 判断url是否有access_token,如果有则将其存储到cookie */
   if (paramas.access_token) {
-    const access_token = paramas.access_token.split('#/')[0];
-    console.log('token:', access_token);
-    Cookies.set('access_token', access_token, { expires: 7 });
-    window.location.href = HOME_PAGE;
+    const accessToken = paramas.access_token.split('#/')[0];
+    console.log('token:', accessToken);
+    Cookies.set('access_token', accessToken, { expires: 7 });
+    // const nextUrl = window.localStorage.getItem('nextUrl'); // 从localStorage读取跳转url
+    // window.location.href = nextUrl || HOME_PAGE;
   } else {
-    window.location.href = LOGIN_URL + '?next=' + NEXT_URL;    
+    console.log('不存在token');
+    window.location.href = `${LOGIN_URL}?next=${VERIFY_PAGE}`;
   }
+  // 读取cookie，如果没有access_token,则跳转到登录页面
+  // /* if (!Cookies.get('access_token')) {
+  //    console.log('用户未登录');
+  //    // window.location.href = REGISTER_URL + '?next='+ LOGIN_URL + "?next=" + NEXT_URL;
+  //    window.location.href = LOGIN_URL + '?next=' + NEXT_URL;
+  //  } else {
+  //    console.log('用户已登录',Cookies.get('access_token'));
+  //    // window.location.href = HOME_PAGE;
+  //  }*/
 }
 
 // 未登录状态跳转到验证页面

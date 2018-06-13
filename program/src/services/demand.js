@@ -1,11 +1,11 @@
+import Cookies from 'js-cookie';
 import lyRequest from '../utils/lyRequest';
 import { URL1 } from '../constant/config';
-import Cookies from 'js-cookie';
 
 // 获取所有需求
 export async function queryAllDemands(offset, limit) {
   const acess_token = Cookies.get('access_token');
-  return lyRequest(`${URL1}/dashboard/reqs?offset=${offset}&limit=${limit}`, {
+  return lyRequest(`${URL1}/operation/reqs?offset=${offset}&limit=${limit}`, {
     headers: {
       Authorization: acess_token,
     },
@@ -17,7 +17,7 @@ export async function queryAllDemands(offset, limit) {
 export async function checkDemand(reqId, status) {
   console.log('审核需求参数', reqId, status);
   const acess_token = Cookies.get('access_token');
-  return lyRequest(`${URL1}/dashboard/reqs/${reqId}/audit_status`, {
+  return lyRequest(`${URL1}/operation/reqs/${reqId}/audit_status`, {
     method: 'put',
     headers: {
       Authorization: acess_token,
@@ -31,7 +31,7 @@ export async function checkDemand(reqId, status) {
 // 删除需求
 export async function deleteDemand(reqId) {
   const acess_token = Cookies.get('access_token');
-  return lyRequest(`${URL1}/dashboard/reqs/${reqId}`, {
+  return lyRequest(`${URL1}/operation/reqs/${reqId}`, {
     method: 'delete',
     headers: {
       Authorization: acess_token,
@@ -42,7 +42,7 @@ export async function deleteDemand(reqId) {
 // 多选删除需求
 export async function deleteDemands(reqIdArr) {
   const acess_token = Cookies.get('access_token');
-  return lyRequest(`${URL1}/dashboard/reqs`, {
+  return lyRequest(`${URL1}/operation/reqs`, {
     method: 'delete',
     headers: {
       Authorization: acess_token,
@@ -56,7 +56,7 @@ export async function deleteDemands(reqIdArr) {
 // 需求详情
 export async function getDemandDetail(reqId) {
   const acess_token = Cookies.get('access_token');
-  return lyRequest(`${URL1}/dashboard/reqs/${reqId}`, {
+  return lyRequest(`${URL1}/operation/reqs/${reqId}`, {
     method: 'get',
     headers: {
       Authorization: acess_token,

@@ -4,7 +4,7 @@ import { LocaleProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import dynamic from 'dva/dynamic';
 import { getRouterData } from './common/router';
-import Test from "./routes/Test/Test";
+import Test from './routes/Test/Test';
 
 import styles from './index.less';
 
@@ -21,7 +21,7 @@ function RouterConfig({ history, app }) {
       <Router history={history}>
         <Switch>
           <Route path="/user" render={props => <UserLayout {...props} />} />
-          <Route path='/test' component={Test} />
+          <Route path="/test" component={Test} />
           <Route path="/" render={props => <BasicLayout {...props} />} />
         </Switch>
       </Router>
