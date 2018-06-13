@@ -40,7 +40,7 @@ export default {
 
   reducers: {
     save(state, action) {
-      window.sessionStorage.setItem('user_id', `${action.payload.data.id}`);
+      window.sessionStorage.setItem('user_id', `${action.payload.id}`);
       return {
         ...state,
         info: action.payload,
