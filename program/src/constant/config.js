@@ -8,7 +8,7 @@
 export const URL = 'https://login.robo2025.com';
 
 // 网站内容接口URL
-export const URL1 = 'http://tapi.robo2025.com/customerdemand';
+export const URL1 = 'http://api.robo2025.com/customerdemand';
 
 // 验证登录接口URL
 export const LOGIN_URL = `${URL}/server/authorize`;
